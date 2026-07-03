@@ -195,6 +195,24 @@ static void cest_assert_eq_int(const char *file, size_t line, const char *func,
      }
 }
 
+static void cest_assert_eq_size_t(const char *file, size_t line, const char *func,
+                                  const char *left_cstr, size_t left,
+                                  const char *right_cstr, size_t right)
+{
+     cest.assertions++;
+     if (left != right) {
+          cest_print_binary(true, CEST_Eq_Fmt, left_cstr, right_cstr);
+          fprintf(stderr, "    "CEST_Cstr_Left":  %zu\n", left);
+          fprintf(stderr, "    "CEST_Cstr_Right": %zu\n", right);
+          cest.assertions_failed++;
+
+          cest_print_test_result();
+          exit(1);
+     } else {
+          cest_print_binary(false, CEST_Eq_Fmt, left_cstr, right_cstr);
+     }
+}
+
 // Expects
 static void cest_expect_true(const char *file, size_t line, const char *func,
                              const char *expr_cstr, bool expr)
@@ -260,6 +278,21 @@ static void cest_expect_eq_int(const char *file, size_t line, const char *func,
           cest_print_binary(true, CEST_Eq_Fmt, left_cstr, right_cstr);
           fprintf(stderr, "    "CEST_Cstr_Left":  %d\n", left);
           fprintf(stderr, "    "CEST_Cstr_Right": %d\n", right);
+          cest.assertions_failed++;
+     } else {
+          cest_print_binary(false, CEST_Eq_Fmt, left_cstr, right_cstr);
+     }
+}
+
+static void cest_expect_eq_size_t(const char *file, size_t line, const char *func,
+                                  const char *left_cstr, size_t left,
+                                  const char *right_cstr, size_t right)
+{
+     cest.assertions++;
+     if (left != right) {
+          cest_print_binary(true, CEST_Eq_Fmt, left_cstr, right_cstr);
+          fprintf(stderr, "    "CEST_Cstr_Left":  %zu\n", left);
+          fprintf(stderr, "    "CEST_Cstr_Right": %zu\n", right);
           cest.assertions_failed++;
      } else {
           cest_print_binary(false, CEST_Eq_Fmt, left_cstr, right_cstr);
